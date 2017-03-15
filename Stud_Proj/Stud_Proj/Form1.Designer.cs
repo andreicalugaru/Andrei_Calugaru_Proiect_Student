@@ -1,4 +1,4 @@
-﻿namespace Student_Project
+﻿namespace Stud_Proj
 {
     partial class Form1
     {
