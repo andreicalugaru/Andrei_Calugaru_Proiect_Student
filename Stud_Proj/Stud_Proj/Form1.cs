@@ -19,8 +19,22 @@ namespace Stud_Proj
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ConnectionManager cm = new ConnectionManager();
-            cm.GetName(1);
+            try
+            {
+                ConnectionManager cm = new ConnectionManager();
+
+                dataGridView1.DataSource = cm.GetStudents();
+            }
+            catch(Exception except)
+            {
+                MessageBox.Show(except.Message);
+            }
+            
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

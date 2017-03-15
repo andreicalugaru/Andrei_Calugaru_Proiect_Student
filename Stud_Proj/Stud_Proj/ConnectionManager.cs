@@ -16,26 +16,33 @@ namespace Stud_Proj
             connectionSettings = @"server=127.0.0.1;port=3306;userid=root;password=;database=studentsdb";
         }
 
-        public void GetName(int id)
+        public IList<Student> GetStudents()
         {
+            IList<Student> studentList = new List<Student>();
             using (MySqlConnection connection = new MySqlConnection(connectionSettings))
             {
+               
                 connection.Open();
-                string statement = "SELECT Nume FROM student WHERE idStudent=1";
+                string statement = "SELECT * FROM student";
                 MySqlCommand cmd = new MySqlCommand(statement, connection);
                 MySqlDataReader reader = cmd.ExecuteReader();
-                //if (reader.HasRows)
-                //{
-                //    while(reader.Read())
-                //   {
-                //       string nume = reader.GetString("Nume");
-                //       Console.WriteLine(nume);
-                //   }
-                // }
-                reader.Read();
-                Console.WriteLine(reader.GetString("Nume"));
+                if (reader.HasRows)
+                {
+                   while(reader.Read())
+                   {
+                        Student stud = new Student();
+                        stud.IdStudent = reader.GetInt32("idStudent");
+                        stud.FirstName = reader.GetString("FirstName");
+                        stud.LastName = reader.GetString("LastName");
+                        stud.BirthDate = reader.GetDateTime("BirthDate");
+                        stud.Address = reader.GetString("Address");
+                        studentList.Add(stud);
+                    }
+                
+                }
 
             }
+            return studentList;
         }
     }
 
