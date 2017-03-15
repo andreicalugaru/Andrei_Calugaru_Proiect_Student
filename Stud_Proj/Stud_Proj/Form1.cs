@@ -16,5 +16,11 @@ namespace Stud_Proj
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ConnectionManager cm = new ConnectionManager();
+            cm.GetName(1);
+        }
     }
 }
