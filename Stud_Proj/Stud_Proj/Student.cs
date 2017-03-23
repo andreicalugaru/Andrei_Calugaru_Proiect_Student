@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Stud_Proj
 {
-    class Student
+    public class Student
     {
         public int IdStudent { get; set; }
         public string FirstName { get; set; }

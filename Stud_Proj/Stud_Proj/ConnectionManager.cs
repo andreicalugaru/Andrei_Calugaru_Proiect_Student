@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Stud_Proj
 {
-    class ConnectionManager
+   public class ConnectionManager
     {
         string connectionSettings;
 
@@ -44,7 +44,73 @@ namespace Stud_Proj
             }
             return studentList;
         }
+
+        public void AddStudent(Student student)
+        {
+            using(MySqlConnection connection = new MySqlConnection(connectionSettings))
+            {
+                connection.Open();
+                string statement = "INSERT INTO student(idStudent, FirstName, LastName, BirthDate, Address) VALUES (@idStudent, @FirstName, @LastName, @BirthDate, @Address)";
+                MySqlCommand cmd = new MySqlCommand(statement, connection);
+                cmd.Prepare();
+                cmd.Parameters.AddWithValue("@idStudent", student.IdStudent);
+                cmd.Parameters.AddWithValue("@FirstName", student.FirstName);
+                cmd.Parameters.AddWithValue("@LastName", student.LastName);
+                cmd.Parameters.AddWithValue("@BirthDate", student.BirthDate);
+                cmd.Parameters.AddWithValue("@Address", student.Address);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void UpdateStudent(Student student)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionSettings))
+            {
+                connection.Open();
+                string statement = "UPDATE student SET FirstName = @FirstName, LastName = @LastName, BirthDate = @BirthDate, Address = @Address WHERE idStudent = " + student.IdStudent;
+                MySqlCommand cmd = new MySqlCommand(statement, connection);
+                cmd.Prepare();
+                //cmd.Parameters.AddWithValue("@idStudent", student.IdStudent);
+                cmd.Parameters.AddWithValue("@FirstName", student.FirstName);
+                cmd.Parameters.AddWithValue("@LastName", student.LastName);
+                cmd.Parameters.AddWithValue("@BirthDate", student.BirthDate);
+                cmd.Parameters.AddWithValue("@Address", student.Address);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void RemoveStudent(int id)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionSettings))
+            {
+                connection.Open();
+                string statement = "DELETE FROM student WHERE idStudent =" + id;
+                MySqlCommand cmd = new MySqlCommand(statement, connection);
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public bool FindStudent(int id)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionSettings))
+            {
+                int readid= -1;
+                connection.Open();
+                string statement = "SELECT * FROM student WHERE idStudent="  + id;
+                MySqlCommand cmd = new MySqlCommand(statement, connection);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                //while (reader.Read())
+                reader.Read();
+                //{
+                    readid = reader.GetInt32("idStudent");
+                //}
+                return readid == id;
+            }
+        }
     }
+
+    
 
 
 }
